@@ -3,8 +3,9 @@
     "dependencies": {
         "cheerio": "latest",
         "express": "latest",
+        "redis": "latest",
         "request": "latest",
-        "string":"latest"
+        "string": "latest"
     },
     "description": "Tool to extract content from PHD Minerals",
     "main": "server.js",
