@@ -1,0 +1,12 @@
+{
+    "author": "limrol",
+    "dependencies": {
+        "cheerio": "latest",
+        "express": "latest",
+        "request": "latest"
+    },
+    "description": "Tool to extract content from PHD Minerals",
+    "main": "server.js",
+    "name": "PHD Minerals scraper",
+    "version": "0.0.1"
+}
