@@ -4,6 +4,7 @@ var fs = require('fs');
 var request = require('request');
 var cheerio = require('cheerio');
 var S = require('string');
+var redis = require('redis');
 
 // APP DECLARATION
 var app     = express();
@@ -35,11 +36,6 @@ app.get('/scrape', function(req, res){
 
             var $ = cheerio.load(html);
 
-            // Finally, we'll define the variables we're going to capture
-
-            var uid, name, link;
-            var json = { uid : "", name : "", link : ""};
-
             // These functions will traverse the listing page in order to retrieve the URL and the product name
 
             $('div.product-list').each(function(i, element){
@@ -62,9 +58,29 @@ app.get('/scrape', function(req, res){
       								// Obtain UID for Product Name
       								var id = S(url).chompLeft('https://phdminerals.com/Minerals/').s;
 
-	      							console.log('UID : ' + id);
-	      							console.log('Product Name : ' + product_name);
-      							    console.log('URL : ' + url);
+      								// We will store These results in Redis in order to use that information in order script
+      								var client = redis.createClient(); 
+
+      								// Connect to Redis Server
+      								client.on('connect', function() {
+
+      									// This is the hash that will be stored in Redis
+      									var hash = 'products:' + id;
+
+      									// We check if the key is already present in redis if the product is there already we skip it
+      									// Otherwise we store it in Redis
+      									client.exists(hash, function(err, reply) {
+    										if (reply === 1) {
+        										console.log('Key '+ hash +' is already in Redis, skip ...');
+    										} 
+    										else {
+    											client.hmset(hash, 'uid', id, 'name', product_name, 'link', url);
+        										console.log('Added key ' + hash + ' to Redis.');
+    										}
+										});
+
+									});
+
       							});
       						}
       					});
