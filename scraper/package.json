@@ -1,5 +1,5 @@
 {
-    "author": "limrol",
+    "author": "Alain Lormil",
     "dependencies": {
         "cheerio": "latest",
         "express": "latest",
