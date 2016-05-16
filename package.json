@@ -1,14 +1,14 @@
 {
     "author": "Alain Lormil",
     "dependencies": {
-        "boom": "latest",
-        "hapi": "latest",
-        "joi": "latest",
+        "boom": "^2.6.1",
+        "hapi": "^8.2.0",
+        "joi": "^5.1.0",
         "mongoose": "latest",
         "node-uuid": "latest"
     },
     "description": "Simple REST project with hapijs and mongodb.",
-    "main": "server.js",
+    "main": "server/server.js",
     "name": "hapi-rest-mongo-rock-api",
     "private": true,
     "version": "0.0.1"
