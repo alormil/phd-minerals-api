@@ -2,15 +2,15 @@
 
 var Joi = require('joi'),
   Boom = require('boom'),
-  Region = require('../models/regions').Region,
+  Regions = require('../models/Regions').Regions,
   mongoose = require('mongoose');
 
 
 exports.getAll = {
   handler: function (request, reply) {
-    Region.find({}, function (err, Region) {
+    Regions.find({}, function (err, Regions) {
       if (!err) {
-        return reply(Region);
+        return reply(Regions);
       }
       return reply(Boom.badImplementation(err)); // 500 error
     });
@@ -19,9 +19,9 @@ exports.getAll = {
 
 exports.getOne = {
   handler: function (request, reply) {
-    Region.findOne({ 'RegionId': request.params.RegionId }, function (err, Region) {
+    Regions.findOne({ 'uid': request.params.uid }, function (err, Regions) {
       if (!err) {
-        return reply(Region);
+        return reply(Regions);
       }
       return reply(Boom.badImplementation(err)); // 500 error
     });
@@ -31,18 +31,19 @@ exports.getOne = {
 exports.create = {
   validate: {
     payload: {
-      RegionId   : Joi.string().required(),
-      Regionname  : Joi.string().required()
+      uid   : Joi.string().required(),
+      name  : Joi.string().required(),
+      link  : Joi.string().required()
     }
   },
   handler: function (request, reply) {
-    var Region = new Region(request.payload);
-    Region.save(function (err, Region) {
+    var Regions = new Regions(request.payload);
+    Regions.save(function (err, Regions) {
       if (!err) {
-        return reply(Region).created('/Region/' + Region._id); // HTTP 201
+        return reply(Regions).created('/Regions/' + Regions._id); // HTTP 201
       }
       if (11000 === err.code || 11001 === err.code) {
-        return reply(Boom.forbidden("please provide another Region id, it already exist"));
+        return reply(Boom.forbidden("please provide another Regions id, it already exist"));
       }
       return reply(Boom.forbidden(err)); // HTTP 403
     });
@@ -52,19 +53,21 @@ exports.create = {
 exports.update = {
   validate: {
     payload: {
-      Regionname  : Joi.string().required()
+      name  : Joi.string().required(),
+      link  : Joi.string().required()
     }
   },
   handler: function (request, reply) {
-    Region.findOne({ 'RegionId': request.params.RegionId }, function (err, Region) {
+    Regions.findOne({ 'uid': request.params.uid }, function (err, Regions) {
       if (!err) {
-        Region.Regionname = request.payload.Regionname;
-        Region.save(function (err, Region) {
+        Regions.name = request.payload.name;
+        Regions.link = request.payload.link;
+        Regions.save(function (err, Regions) {
           if (!err) {
-            return reply(Region); // HTTP 201
+            return reply(Regions); // HTTP 201
           }
           if (11000 === err.code || 11001 === err.code) {
-            return reply(Boom.forbidden("please provide another Region id, it already exist"));
+            return reply(Boom.forbidden("please provide another Regions id, it already exist"));
           }
           return reply(Boom.forbidden(err)); // HTTP 403
         });
@@ -78,15 +81,15 @@ exports.update = {
 
 exports.remove = {
   handler: function (request, reply) {
-    Region.findOne({ 'RegionId': request.params.RegionId }, function (err, Region) {
-      if (!err && Region) {
-        Region.remove();
-        return reply({ message: "Region deleted successfully"});
+    Regions.findOne({ 'uid': request.params.uid }, function (err, Regions) {
+      if (!err && Regions) {
+        Regions.remove();
+        return reply({ message: "Regions deleted successfully"});
       }
       if (!err) {
         return reply(Boom.notFound());
       }
-      return reply(Boom.badRequest("Could not delete Region"));
+      return reply(Boom.badRequest("Could not delete Regions"));
     });
   }
 };
@@ -95,9 +98,9 @@ exports.removeAll = {
   handler: function (request, reply) {
     mongoose.connection.db.dropCollection('Regions', function (err, result) {
       if (!err) {
-        return reply({ message: "Region database successfully deleted"});
+        return reply({ message: "Regions database successfully deleted"});
       }
-      return reply(Boom.badRequest("Could not delete Region"));
+      return reply(Boom.badRequest("Could not delete Regions"));
     });
   }
 };

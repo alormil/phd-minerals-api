@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
-  * @module  User
+  * @module  Region
   * @description contain the details of Attribute  
 */
 
@@ -27,9 +27,9 @@ var RegionSchema = new Schema({
 
 });
 
-var region = mongoose.model('region', RegionSchema);
+var regions = mongoose.model('regions', RegionSchema);
 
 /** export schema */
 module.exports = {
-  Region : region
+  Regions : regions
 };
