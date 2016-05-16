@@ -10,5 +10,6 @@
     "description": "Tool to extract content from PHD Minerals",
     "main": "server.js",
     "name": "PHD-Minerals-Scraper",
+    "private": true,
     "version": "0.0.1"
 }
