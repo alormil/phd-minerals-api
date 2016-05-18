@@ -35,8 +35,9 @@ exports.create = {
       name  : Joi.string().required(),
       link  : Joi.string().required(),
       descriptions: Joi.any(),
-      dateCreated: Joi.string(),
-      lastUpdated: Joi.string(),
+      images: Joi.any(),
+      dateCreated: Joi.date(),
+      lastUpdated: Joi.date(),
       author: Joi.string()
     }
   },
@@ -59,11 +60,11 @@ exports.update = {
     payload: {
       name  : Joi.string().required(),
       link  : Joi.string().required(),
-      descriptions: Joi.string(),
-      dateCreated: Joi.string(),
-      lastUpdated: Joi.string(),
+      descriptions: Joi.any(),
+      images: Joi.any(),
+      dateCreated: Joi.date(),
+      lastUpdated: Joi.date(),
       author: Joi.string()
-
     }
   },
   handler: function (request, reply) {

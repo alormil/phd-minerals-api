@@ -22,6 +22,20 @@ var DescriptionSchema = new Schema ({
 
 });
 
+var ImageSchema = new Schema ({
+
+  title: String, 
+
+  link: String, 
+
+  dateCreated: Date, 
+  
+  lastUpdated: { type: Date, default: Date.now }, 
+
+  author: String 
+
+});
+
 var TypeSchema = new Schema({
 
   /** 
@@ -45,6 +59,11 @@ var TypeSchema = new Schema({
   descriptions : [ DescriptionSchema ],
 
   /** 
+    Type Description which will contain the language, the text itself, the date it was created, updated and the author. It can only contain string, is required field.
+  */
+  images : [ ImageSchema ],
+
+  /** 
     Type Date Creation. It will contain date
   */
   dateCreated: Date,
@@ -54,7 +73,6 @@ var TypeSchema = new Schema({
   */
   lastUpdated: { type: Date, default: Date.now },
   
-
    /** 
     Type Date author name. It will contain String
   */ 

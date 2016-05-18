@@ -2,6 +2,7 @@
 
 var Regions      = require('./controllers/regions');
 var Types      = require('./controllers/types');
+var Products      = require('./controllers/products');
 
 // API Server Endpoints
 exports.endpoints = [
@@ -18,5 +19,12 @@ exports.endpoints = [
   { method: 'GET', path: '/types/{uid}', config: Types.getOne},
   { method: 'PUT', path: '/types/{uid}', config: Types.update},
   { method: 'DELETE', path: '/types/{uid}', config: Types.remove},
-  { method: 'DELETE', path: '/types', config: Types.removeAll}
+  { method: 'DELETE', path: '/types', config: Types.removeAll},
+
+  { method: 'POST', path: '/products', config: Products.create},
+  { method: 'GET', path: '/products', config: Products.getAll},
+  { method: 'GET', path: '/products/{uid}', config: Products.getOne},
+  { method: 'PUT', path: '/products/{uid}', config: Products.update},
+  { method: 'DELETE', path: '/products/{uid}', config: Products.remove},
+  { method: 'DELETE', path: '/products', config: Products.removeAll}
 ];

@@ -33,7 +33,12 @@ exports.create = {
     payload: {
       uid   : Joi.string().required(),
       name  : Joi.string().required(),
-      link  : Joi.string().required()
+      link  : Joi.string().required(),
+      descriptions: Joi.any(),
+      images: Joi.any(),
+      dateCreated: Joi.date(),
+      lastUpdated: Joi.date(),
+      author: Joi.string()
     }
   },
   handler: function (request, reply) {
@@ -54,7 +59,12 @@ exports.update = {
   validate: {
     payload: {
       name  : Joi.string().required(),
-      link  : Joi.string().required()
+      link  : Joi.string().required(),
+      descriptions: Joi.any(),
+      images: Joi.any(),
+      dateCreated: Joi.date(),
+      lastUpdated: Joi.date(),
+      author: Joi.string()
     }
   },
   handler: function (request, reply) {
