@@ -31,7 +31,4 @@ exports.endpoints = [
     { method: 'DELETE', path: '/products', config: Products.removeAll },
 
     { method: 'GET', path: '/scrape-link', config: ScrapeLink.getAllLinks }
-    //  { method: 'GET', path: '/scrape-region', config: Products.getAll},
-    //  { method: 'GET', path: '/scrape-type', config: Products.getAll},
-    //  { method: 'GET', path: '/scrape-product', config: Products.getAll}
 ];

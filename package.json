@@ -1,21 +1,16 @@
 {
     "author": "Alain Lormil",
     "dependencies": {
-        "body-parser": "~1.14.2",
         "boom": "^2.6.1",
         "cheerio": "latest",
-        "cookie-parser": "~1.4.1",
-        "express": "latest",
         "hapi": "^8.2.0",
         "joi": "^5.1.0",
-        "method-override": "~2.3.5",
         "mongoose": "latest",
-        "node-uuid": "latest",
         "redis": "latest",
         "request": "latest",
         "string": "latest"
     },
-    "description": "Simple REST project with hapijs and mongodb.",
+    "description": "Simple REST project with hapijs , redis and mongodb.",
     "main": "server/server.js",
     "name": "hapi-rest-mongo-rock-api",
     "private": true,
