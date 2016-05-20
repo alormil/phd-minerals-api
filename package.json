@@ -11,7 +11,7 @@
         "string": "latest"
     },
     "description": "Simple REST project with hapijs , redis and mongodb.",
-    "main": "server/server.js",
+    "main": "server.js",
     "name": "hapi-rest-mongo-rock-api",
     "private": true,
     "version": "0.0.1"
