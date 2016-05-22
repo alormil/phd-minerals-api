@@ -5,6 +5,7 @@ var Types = require('./controllers/types');
 var Products = require('./controllers/products');
 
 var ScrapeLink = require('./controllers/scrape-link');
+var ScrapeRegion = require('./controllers/scrape-region');
 
 // API Server Endpoints
 exports.endpoints = [
@@ -30,5 +31,8 @@ exports.endpoints = [
     { method: 'DELETE', path: '/products/{uid}', config: Products.remove },
     { method: 'DELETE', path: '/products', config: Products.removeAll },
 
-    { method: 'GET', path: '/scrape-link', config: ScrapeLink.getAllLinks }
+    { method: 'GET', path: '/scrape-link', config: ScrapeLink.getAllLinks },
+
+    { method: 'GET', path: '/scrape-region', config: ScrapeRegion.getAllRegions },
+    { method: 'GET', path: '/scrape-region/{uid}', config: ScrapeRegion.getOneRegion }
 ];
