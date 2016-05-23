@@ -1,3 +1,12 @@
+/*
+ *
+ * This shows all the allowed routes for the application
+ * I want to give credit to https://github.com/Cron-J, they posted an good example of how to structure
+ * a Hapi JS, Mongo DB project, which is where i was able to reference this config file : 
+ * https://github.com/Cron-J/Hapi-Mongoose-Angular-Node.js/blob/master/server/routes.js
+ *
+ */
+
 // Load modules
 
 var Regions = require('./controllers/regions');
