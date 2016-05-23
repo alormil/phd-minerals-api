@@ -15,9 +15,33 @@ You can read more details in Wiki : [https://bitbucket.org/limrol/rock-api/wiki/
 ### How do I get set up? ###
 
 * Summary of set up
+
+1. Make sure you have Node JS, Redis and Mongo DB installed
+2. Clone the repo into chosen directory and move to that directory
+3. Run the following commands 
+
+```
+npm install
+node server.js 
+redis-cli < scripts/regions_redis_import_script 
+redis-cli < scripts/typess_redis_import_script 
+```
+4. You can now scrape the website by calling the following URLS :
+
+localhost:8080/scrape-link
+localhost:8080/scrape-region
+localhost:8080/scrape-type 
+localhost:8080/scrape-products
+etc .. 
+
 * Configuration
+
+You can update the configs of Mongo DB in config/config.js
+
 * Dependencies
-* Database configuration
+
+All the package dependencies are located in package.json file
+
 * How to run tests
 * Deployment instructions
 
