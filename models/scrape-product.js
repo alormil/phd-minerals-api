@@ -4,13 +4,13 @@ var cheerio = require('cheerio');
 var S = require('string');
 var redis = require('redis');
 
-var saveRegionInDB = function(uid, name, link, text, json) {
+var saveProductInDB = function(uid, name, link, text, json) {
 
     var string = "{\"author\": \"admin\",\"dateCreated\": \"" + Date.now() + "\",\"descriptions\": [{\"author\": \"admin\",\"dateCreated\": \"" + Date.now() + "\",\"language\": \"English\",\"lastUpdated\": \"" + Date.now() + "\",\"text\": \"" + text + "\"}],\"lastUpdated\": \"" + Date.now() + "\",\"link\": \"" + link + "\",\"name\": \"" + name + "\",\"uid\": \"" + uid + "\"}";
     json = string;
 
     request({
-        url: 'http://localhost:8080/regions',
+        url: 'http://localhost:8080/types',
         method: 'POST',
         //Lets post the following key/values as form
         json: JSON.parse(json)
@@ -18,20 +18,20 @@ var saveRegionInDB = function(uid, name, link, text, json) {
         if (error) {
             console.log(error);
         } else {
-            //console.log("Region : " + name + " was added to MongoDB");
+            console.log("Type : " + name + " was added to MongoDB");
         }
     });
 };
 
 /*
  * 
- * This function takes the Region uid, gets the info from Redis , crawls the website and stores it in MongoDB
+ * This function takes the Product uid, gets the info from Redis , crawls the website and stores it in MongoDB
  *
  */
-var getRegion = function(uid) {
+var getProduct = function(uid) {
 
     // Using the uid, we can obtain the Redis key that will contain the link of the product to scrape
-    var hkey = "regions:" + uid;
+    var hkey = "products:" + uid;
 
     // Initializing variables that will be used to store data
     var name, link, text;
@@ -61,22 +61,10 @@ var getRegion = function(uid) {
                     
                     // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
                     var $ = cheerio.load(html);
-
-                    // We scrape the paragraph with the description of the Region
-                    $('div.category-info').each(function(i, element) {
-                        $(this).children().each(function(i, element) {
-
-                            text = $(this).text();
-
-                            var json;
-                            saveRegionInDB(uid, name, link, text, json);
-
-                        });
-                    });
                 }
             })
         });
     });
 };
 
-module.exports.getRegion = getRegion;
+module.exports.getProduct = getProduct;

@@ -6,6 +6,8 @@ var Products = require('./controllers/products');
 
 var ScrapeLink = require('./controllers/scrape-link');
 var ScrapeRegion = require('./controllers/scrape-region');
+var ScrapeType = require('./controllers/scrape-type');
+var ScrapeProduct = require('./controllers/scrape-product');
 
 // API Server Endpoints
 exports.endpoints = [
@@ -33,5 +35,8 @@ exports.endpoints = [
 
     { method: 'GET', path: '/scrape-link', config: ScrapeLink.getAllLinks },
 
-    { method: 'GET', path: '/scrape-region/{uid}', config: ScrapeRegion.getOneRegion }
+    { method: 'GET', path: '/scrape-region/{uid}', config: ScrapeRegion.getRegion },
+    { method: 'GET', path: '/scrape-type/{uid}', config: ScrapeType.getType },
+    { method: 'GET', path: '/scrape-product/{uid}', config: ScrapeProduct.getProduct }
+
 ];
