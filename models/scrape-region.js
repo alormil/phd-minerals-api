@@ -3,6 +3,8 @@ var request = require('request');
 var cheerio = require('cheerio');
 var S = require('string');
 var redis = require('redis');
+var async = require("async");
+
 
 var saveRegionInDB = function(uid, name, link, text, json) {
 
@@ -18,7 +20,7 @@ var saveRegionInDB = function(uid, name, link, text, json) {
         if (error) {
             console.log(error);
         } else {
-            console.log("Region : " + name + " was added to MongoDB");
+            //console.log("Region : " + name + " was added to MongoDB");
         }
     });
 };
@@ -37,14 +39,19 @@ var getAllRegions = function() {
         // We will retrieve the values of the name of the Region and link in Redis
         client.keys(query, function(err, keys) {
 
-            for (var i = 0, len = keys.length; i < len; i++) {
+            async.forEach(keys, function(key, callback) {
                 
                 // Obtain UID from Key
-                var uid = S(keys[i]).chompLeft('regions:').s;
-                
-                // Store the product in DB
+                var uid = S(key).chompLeft('regions:').s;
+                console.log(" curl http://localhost:8080/regions/"+uid);
+                console.log("sleep 5");
                 getOneRegion(uid);
-            }
+                callback();
+
+            }, function(err) {
+                console.log('iterating done');
+            });
+
         });
     });
 
@@ -83,10 +90,9 @@ var getOneRegion = function(uid) {
             // The first parameter is our URL
             // The callback function takes 3 parameters, an error, response status code and the html
             request(link, function(error, response, html) {
-
                 // First we'll check to make sure no errors occurred when making the request
                 if (!error) {
-
+                    
                     // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
                     var $ = cheerio.load(html);
 
