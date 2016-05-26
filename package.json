@@ -1,7 +1,6 @@
 {
     "author": "Alain Lormil",
     "dependencies": {
-        "async": "latest",
         "boom": "^2.6.1",
         "cheerio": "latest",
         "hapi": "^8.2.0",

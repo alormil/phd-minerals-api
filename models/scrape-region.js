@@ -3,8 +3,6 @@ var request = require('request');
 var cheerio = require('cheerio');
 var S = require('string');
 var redis = require('redis');
-var async = require("async");
-
 
 var saveRegionInDB = function(uid, name, link, text, json) {
 
@@ -23,38 +21,6 @@ var saveRegionInDB = function(uid, name, link, text, json) {
             //console.log("Region : " + name + " was added to MongoDB");
         }
     });
-};
-
-
-var getAllRegions = function() {
-
-    var query = "regions:*";
-
-    // We will store These results in Redis in order to use that information in order script
-    var client = redis.createClient();
-
-    // Connect to Redis Server
-    client.on('connect', function() {
-
-        // We will retrieve the values of the name of the Region and link in Redis
-        client.keys(query, function(err, keys) {
-
-            async.forEach(keys, function(key, callback) {
-                
-                // Obtain UID from Key
-                var uid = S(key).chompLeft('regions:').s;
-                console.log(" curl http://localhost:8080/regions/"+uid);
-                console.log("sleep 5");
-                getOneRegion(uid);
-                callback();
-
-            }, function(err) {
-                console.log('iterating done');
-            });
-
-        });
-    });
-
 };
 
 /*
@@ -113,5 +79,4 @@ var getOneRegion = function(uid) {
     });
 };
 
-module.exports.getAllRegions = getAllRegions;
 module.exports.getOneRegion = getOneRegion;

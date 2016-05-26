@@ -33,6 +33,5 @@ exports.endpoints = [
 
     { method: 'GET', path: '/scrape-link', config: ScrapeLink.getAllLinks },
 
-    { method: 'GET', path: '/scrape-region', config: ScrapeRegion.getAllRegions },
     { method: 'GET', path: '/scrape-region/{uid}', config: ScrapeRegion.getOneRegion }
 ];
