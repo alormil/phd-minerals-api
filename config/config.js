@@ -1,3 +1,9 @@
+/*
+ *
+ * This config file is used to allow to modify the parameters to connect to the Mongo DB database accross the project.
+ *
+ */
+
 'use strict';
 
 module.exports = {
