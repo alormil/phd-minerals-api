@@ -2,9 +2,11 @@
     "author": "Alain Lormil",
     "dependencies": {
         "boom": "^2.6.1",
+        "chai": "^3.5.0",
         "cheerio": "latest",
         "hapi": "^8.2.0",
         "joi": "^5.1.0",
+        "mocha": "^2.5.3",
         "mongoose": "latest",
         "redis": "latest",
         "request": "latest",
