@@ -33,10 +33,10 @@ exports.endpoints = [
     { method: 'DELETE', path: '/products/{uid}', config: Products.remove },
     { method: 'DELETE', path: '/products', config: Products.removeAll },
 
-    { method: 'GET', path: '/scrape-link', config: ScrapeLink.getAllLinks },
+    { method: 'POST', path: '/scrape-link', config: ScrapeLink.getAllLinks },
 
-    { method: 'GET', path: '/scrape-region/{uid}', config: ScrapeRegion.getRegion },
-    { method: 'GET', path: '/scrape-type/{uid}', config: ScrapeType.getType },
-    { method: 'GET', path: '/scrape-product/{uid}', config: ScrapeProduct.getProduct }
+    { method: 'POST', path: '/scrape-region/{uid}', config: ScrapeRegion.getRegion },
+    { method: 'POST', path: '/scrape-type/{uid}', config: ScrapeType.getType },
+    { method: 'POST', path: '/scrape-product/{uid}', config: ScrapeProduct.getProduct }
 
 ];
