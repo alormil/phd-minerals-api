@@ -4,10 +4,9 @@ var cheerio = require('cheerio');
 var S = require('string');
 var redis = require('redis');
 
-var saveRegionInDB = function(uid, name, link, text, json) {
+var saveRegionInDB = function(uid, name, link, text) {
 
-    var string = "{\"author\": \"admin\",\"dateCreated\": \"" + Date.now() + "\",\"descriptions\": [{\"author\": \"admin\",\"dateCreated\": \"" + Date.now() + "\",\"language\": \"English\",\"lastUpdated\": \"" + Date.now() + "\",\"text\": \"" + text + "\"}],\"lastUpdated\": \"" + Date.now() + "\",\"link\": \"" + link + "\",\"name\": \"" + name + "\",\"uid\": \"" + uid + "\"}";
-    json = string;
+    var json = "{\"author\": \"admin\",\"dateCreated\": \"" + Date.now() + "\",\"descriptions\": [{\"author\": \"admin\",\"dateCreated\": \"" + Date.now() + "\",\"language\": \"English\",\"lastUpdated\": \"" + Date.now() + "\",\"text\": \"" + text + "\"}],\"lastUpdated\": \"" + Date.now() + "\",\"link\": \"" + link + "\",\"name\": \"" + name + "\",\"uid\": \"" + uid + "\"}";
 
     request({
         url: 'http://localhost:8080/regions',
@@ -63,13 +62,11 @@ var getRegion = function(uid) {
                     var $ = cheerio.load(html);
 
                     // We scrape the paragraph with the description of the Region
-                    $('div.category-info').each(function(i, element) {
-                        $(this).children().each(function(i, element) {
+                    $('div.category-info').each(function () {
+                        $(this).children().each(function () {
 
                             text = $(this).text();
-
-                            var json;
-                            saveRegionInDB(uid, name, link, text, json);
+                            saveRegionInDB(uid, name, link, text);
 
                         });
                     });

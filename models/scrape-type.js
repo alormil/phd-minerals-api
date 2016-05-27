@@ -4,11 +4,10 @@ var cheerio = require('cheerio');
 var S = require('string');
 var redis = require('redis');
 
-var saveTypeInDB = function(uid, name, link, text, json) {
+var saveTypeInDB = function(uid, name, link, text) {
 
-    var string = "{\"author\": \"admin\",\"dateCreated\": \"" + Date.now() + "\",\"descriptions\": [{\"author\": \"admin\",\"dateCreated\": \"" + Date.now() + "\",\"language\": \"English\",\"lastUpdated\": \"" + Date.now() + "\",\"text\": \"" + text + "\"}],\"lastUpdated\": \"" + Date.now() + "\",\"link\": \"" + link + "\",\"name\": \"" + name + "\",\"uid\": \"" + uid + "\"}";
-    json = string;
-
+    var json = "{\"uid\": \"" + uid + "\",\"name\": \"" + name + "\",\"link\": \"" + link + "\",\"dateCreated\": \"" + Date.now() + "\",\"author\": \"admin\",\"lastUpdated\": \"" + Date.now() + "\",\"images\": [{\"title\": \"\",\"link\": \"\",\"dateCreated\": \"" + Date.now() + "\",\"author\": \"admin\",\"lastUpdated\": \"" + Date.now() + "\"}],\"descriptions\": [{\"language\": \"English\",\"text\": \"" + text + "\",\"dateCreated\": \"" + Date.now() + "\",\"author\": \"admin\",\"lastUpdated\": \"" + Date.now() + "\"}]}";
+    console.log(json);
     request({
         url: 'http://localhost:8080/types',
         method: 'POST',
@@ -59,8 +58,21 @@ var getType = function(uid) {
                 // First we'll check to make sure no errors occurred when making the request
                 if (!error) {
                     
+                    var description = "";
                     // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
                     var $ = cheerio.load(html);
+
+                    $('div.breadcrumb').nextUntil('div.product-filter').each( function () {
+                        if ($(this).is('h1') != 1 ){
+
+                            text = $(this).text();
+                            description = description + text;
+
+                        }
+                    });
+                    text = text.toString().replace(/"/g, '\\"');
+                    text = text.replace(/[|&;$%@"<>()+,]/g, "");
+                    saveTypeInDB(uid, name, link, text);
                 }
             })
         });
