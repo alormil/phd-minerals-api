@@ -7,7 +7,7 @@ var redis = require('redis');
 var saveTypeInDB = function(uid, name, link, text) {
 
     var json = "{\"uid\": \"" + uid + "\",\"name\": \"" + name + "\",\"link\": \"" + link + "\",\"dateCreated\": \"" + Date.now() + "\",\"author\": \"admin\",\"lastUpdated\": \"" + Date.now() + "\",\"images\": [{\"title\": \"\",\"link\": \"\",\"dateCreated\": \"" + Date.now() + "\",\"author\": \"admin\",\"lastUpdated\": \"" + Date.now() + "\"}],\"descriptions\": [{\"language\": \"English\",\"text\": \"" + text + "\",\"dateCreated\": \"" + Date.now() + "\",\"author\": \"admin\",\"lastUpdated\": \"" + Date.now() + "\"}]}";
-    console.log(json);
+
     request({
         url: 'http://localhost:8080/types',
         method: 'POST',
@@ -70,8 +70,12 @@ var getType = function(uid) {
 
                         }
                     });
+                    
+                    // Clean the text string to remove all invalide characters that would invalidate JSON file
+                    text = text.replace(/(\r\n|\n|\r)/gm,"");
+                    text = text.trim();
                     text = text.toString().replace(/"/g, '\\"');
-                    text = text.replace(/[|&;$%@"<>()+,]/g, "");
+                    text = text.replace(/[|&;$%@<>()+]/g, "");
                     saveTypeInDB(uid, name, link, text);
                 }
             })
