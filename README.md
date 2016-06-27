@@ -53,5 +53,5 @@ All the package dependencies are located in package.json file
 
 ### Who do I talk to? ###
 
-* Repo owner : [https://bitbucket.org/limrol/](Link URL)
+* Repo owner : [https://github.com/alormil/](Link URL)
 * Other community or team contact

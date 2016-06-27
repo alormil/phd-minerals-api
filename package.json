@@ -13,6 +13,13 @@
         "string": "latest"
     },
     "description": "Simple REST project with hapijs , redis and mongodb.",
+    "devDependencies": {
+        "eslint": "^2.13.1",
+        "eslint-config-airbnb-base": "^3.0.1",
+        "eslint-plugin-import": "^1.9.2",
+        "eslint-plugin-jsx-a11y": "^1.5.3",
+        "eslint-plugin-react": "^5.2.2"
+    },
     "main": "server.js",
     "name": "hapi-rest-mongo-rock-api",
     "private": true,

@@ -2,21 +2,21 @@
  *
  * This shows all the allowed routes for the application
  * I want to give credit to https://github.com/Cron-J, they posted an good example of how to structure
- * a Hapi JS, Mongo DB project, which is where i was able to reference this config file : 
+ * a Hapi JS, Mongo DB project, which is where i was able to reference this config file :
  * https://github.com/Cron-J/Hapi-Mongoose-Angular-Node.js/blob/master/server/routes.js
  *
  */
 
 // Load modules
 
-var Regions = require('./controllers/regions');
-var Types = require('./controllers/types');
-var Products = require('./controllers/products');
+const Regions = require('./controllers/regions');
+const Types = require('./controllers/types');
+const Products = require('./controllers/products');
 
-var ScrapeLink = require('./controllers/scrape-link');
-var ScrapeRegion = require('./controllers/scrape-region');
-var ScrapeType = require('./controllers/scrape-type');
-var ScrapeProduct = require('./controllers/scrape-product');
+const ScrapeLink = require('./controllers/scrape-link');
+const ScrapeRegion = require('./controllers/scrape-region');
+const ScrapeType = require('./controllers/scrape-type');
+const ScrapeProduct = require('./controllers/scrape-product');
 
 // API Server Endpoints
 exports.endpoints = [
@@ -46,6 +46,6 @@ exports.endpoints = [
 
     { method: 'POST', path: '/scrape-region/{uid}', config: ScrapeRegion.getRegion },
     { method: 'POST', path: '/scrape-type/{uid}', config: ScrapeType.getType },
-    { method: 'POST', path: '/scrape-product/{uid}', config: ScrapeProduct.getProduct }
+    { method: 'POST', path: '/scrape-product/{uid}', config: ScrapeProduct.getProduct },
 
 ];
