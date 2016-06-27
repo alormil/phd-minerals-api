@@ -1,31 +1,29 @@
-'use strict';
-
-var Joi = require('joi'),
-    Boom = require('boom'),
-    Regions = require('../models/Regions').Regions,
-    mongoose = require('mongoose');
+const Joi = require('joi');
+const Boom = require('boom');
+const Regions = require('../models/regions').Regions;
+const mongoose = require('mongoose');
 
 
 exports.getAll = {
-    handler: function(request, reply) {
-        Regions.find({}, function(err, regions) {
+    handler: (request, reply) => {
+        Regions.find({}, (err, regions) => {
             if (!err) {
                 return reply(regions);
             }
             return reply(Boom.badImplementation(err)); // 500 error
         });
-    }
+    },
 };
 
 exports.getOne = {
-    handler: function(request, reply) {
-        Regions.findOne({ 'uid': request.params.uid }, function(err, regions) {
+    handler: (request, reply) => {
+        Regions.findOne({ uid: request.params.uid }, (err, regions) => {
             if (!err) {
                 return reply(regions);
             }
             return reply(Boom.badImplementation(err)); // 500 error
         });
-    }
+    },
 };
 
 exports.create = {
@@ -38,21 +36,21 @@ exports.create = {
             images: Joi.any(),
             dateCreated: Joi.date(),
             lastUpdated: Joi.date(),
-            author: Joi.string()
-        }
+            author: Joi.string(),
+        },
     },
-    handler: function(request, reply) {
-        var regions = new Regions(request.payload);
-        regions.save(function(err, regions) {
+    handler: (request, reply) => {
+        const regions = new Regions(request.payload);
+        regions.save((err, result) => {
             if (!err) {
-                return reply(regions).created('/regions/' + regions._id); // HTTP 201
+                return reply(regions).created(`/regions/${result.id}`); // HTTP 201
             }
-            if (11000 === err.code || 11001 === err.code) {
-                return reply(Boom.forbidden("please provide another regions id, it already exist"));
+            if (err.code === 11000 || err.code === 11001) {
+                return reply(Boom.forbidden('please provide another regions id, it already exist'));
             }
             return reply(Boom.forbidden(err)); // HTTP 403
         });
-    }
+    },
 };
 
 exports.update = {
@@ -64,52 +62,51 @@ exports.update = {
             images: Joi.any(),
             dateCreated: Joi.date(),
             lastUpdated: Joi.date(),
-            author: Joi.string()
-        }
+            author: Joi.string(),
+        },
     },
-    handler: function(request, reply) {
-        Regions.findOne({ 'uid': request.params.uid }, function(err, regions) {
+    handler: (request, reply) => {
+        Regions.findOne({ uid: request.params.uid }, (err, regions) => {
             if (!err) {
                 regions.name = request.payload.name;
                 regions.link = request.payload.link;
-                regions.save(function(err, regions) {
-                    if (!err) {
-                        return reply(regions); // HTTP 201
+                regions.save((error, result) => {
+                    if (!error) {
+                        return reply(result); // HTTP 201
                     }
-                    if (11000 === err.code || 11001 === err.code) {
-                        return reply(Boom.forbidden("please provide another regions id, it already exist"));
+                    if (error.code === 11000 || error.code === 11001) {
+                        return reply(Boom.forbidden('Provide other regions id, it already exist'));
                     }
-                    return reply(Boom.forbidden(err)); // HTTP 403
+                    return reply(Boom.badImplementation(err)); // 500 error
                 });
-            } else {
-                return reply(Boom.badImplementation(err)); // 500 error
             }
+            return reply(Boom.badImplementation(err)); // 500 error
         });
-    }
+    },
 };
 
 exports.remove = {
-    handler: function(request, reply) {
-        Regions.findOne({ 'uid': request.params.uid }, function(err, regions) {
+    handler: (request, reply) => {
+        Regions.findOne({ uid: request.params.uid }, (err, regions) => {
             if (!err && regions) {
                 regions.remove();
-                return reply({ message: "regions deleted successfully" });
+                return reply({ message: 'regions deleted successfully' });
             }
             if (!err) {
                 return reply(Boom.notFound());
             }
-            return reply(Boom.badRequest("Could not delete regions"));
+            return reply(Boom.badRequest('Could not delete regions'));
         });
-    }
+    },
 };
 
 exports.removeAll = {
-    handler: function(request, reply) {
-        mongoose.connection.db.dropCollection('regions', function(err, result) {
+    handler: (request, reply) => {
+        mongoose.connection.db.dropCollection('regions', (err) => {
             if (!err) {
-                return reply({ message: "regions database successfully deleted" });
+                return reply({ message: 'regions database successfully deleted' });
             }
-            return reply(Boom.badRequest("Could not delete regions"));
+            return reply(Boom.badRequest('Could not delete regions'));
         });
-    }
+    },
 };

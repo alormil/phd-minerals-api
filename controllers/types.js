@@ -1,31 +1,29 @@
-'use strict';
-
-var Joi = require('joi'),
-    Boom = require('boom'),
-    Types = require('../models/Types').Types,
-    mongoose = require('mongoose');
+const Joi = require('joi');
+const Boom = require('boom');
+const Types = require('../models/types').Types;
+const mongoose = require('mongoose');
 
 
 exports.getAll = {
-    handler: function(request, reply) {
-        Types.find({}, function(err, types) {
+    handler: (request, reply) => {
+        Types.find({}, (err, types) => {
             if (!err) {
                 return reply(types);
             }
             return reply(Boom.badImplementation(err)); // 500 error
         });
-    }
+    },
 };
 
 exports.getOne = {
-    handler: function(request, reply) {
-        Types.findOne({ 'uid': request.params.uid }, function(err, types) {
+    handler: (request, reply) => {
+        Types.findOne({ uid: request.params.uid }, (err, types) => {
             if (!err) {
                 return reply(types);
             }
             return reply(Boom.badImplementation(err)); // 500 error
         });
-    }
+    },
 };
 
 exports.create = {
@@ -38,21 +36,21 @@ exports.create = {
             images: Joi.any(),
             dateCreated: Joi.date(),
             lastUpdated: Joi.date(),
-            author: Joi.string()
-        }
+            author: Joi.string(),
+        },
     },
-    handler: function(request, reply) {
-        var types = new Types(request.payload);
-        types.save(function(err, types) {
+    handler: (request, reply) => {
+        const types = new Types(request.payload);
+        types.save((err, result) => {
             if (!err) {
-                return reply(types).created('/types/' + types._id); // HTTP 201
+                return reply(types).created(`/types/${result.id}`); // HTTP 201
             }
-            if (11000 === err.code || 11001 === err.code) {
-                return reply(Boom.forbidden("please provide another types id, it already exist"));
+            if (err.code === 11000 || err.code === 11001) {
+                return reply(Boom.forbidden('please provide another types id, it already exist'));
             }
             return reply(Boom.forbidden(err)); // HTTP 403
         });
-    }
+    },
 };
 
 exports.update = {
@@ -64,52 +62,51 @@ exports.update = {
             images: Joi.any(),
             dateCreated: Joi.date(),
             lastUpdated: Joi.date(),
-            author: Joi.string()
-        }
+            author: Joi.string(),
+        },
     },
-    handler: function(request, reply) {
-        Types.findOne({ 'uid': request.params.uid }, function(err, types) {
+    handler: (request, reply) => {
+        Types.findOne({ uid: request.params.uid }, (err, types) => {
             if (!err) {
                 types.name = request.payload.name;
                 types.link = request.payload.link;
-                types.save(function(err, types) {
-                    if (!err) {
-                        return reply(types); // HTTP 201
+                types.save((error, result) => {
+                    if (!error) {
+                        return reply(result); // HTTP 201
                     }
-                    if (11000 === err.code || 11001 === err.code) {
-                        return reply(Boom.forbidden("please provide another types id, it already exist"));
+                    if (error.code === 11000 || error.code === 11001) {
+                        return reply(Boom.forbidden('Provide another types id, it already exist'));
                     }
                     return reply(Boom.forbidden(err)); // HTTP 403
                 });
-            } else {
-                return reply(Boom.badImplementation(err)); // 500 error
             }
+            return reply(Boom.badImplementation(err)); // 500 error
         });
-    }
+    },
 };
 
 exports.remove = {
-    handler: function(request, reply) {
-        Types.findOne({ 'uid': request.params.uid }, function(err, types) {
+    handler: (request, reply) => {
+        Types.findOne({ uid: request.params.uid }, (err, types) => {
             if (!err && types) {
                 types.remove();
-                return reply({ message: "types deleted successfully" });
+                return reply({ message: 'types deleted successfully' });
             }
             if (!err) {
                 return reply(Boom.notFound());
             }
-            return reply(Boom.badRequest("Could not delete types"));
+            return reply(Boom.badRequest('Could not delete types'));
         });
-    }
+    },
 };
 
 exports.removeAll = {
-    handler: function(request, reply) {
-        mongoose.connection.db.dropCollection('types', function(err, result) {
+    handler: (request, reply) => {
+        mongoose.connection.db.dropCollection('types', (err) => {
             if (!err) {
-                return reply({ message: "types database successfully deleted" });
+                return reply({ message: 'types database successfully deleted' });
             }
-            return reply(Boom.badRequest("Could not delete types"));
+            return reply(Boom.badRequest('Could not delete types'));
         });
-    }
+    },
 };

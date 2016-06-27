@@ -1,25 +1,21 @@
-var config = require('../config/config');
-var request = require('request');
-var cheerio = require('cheerio');
-var S = require('string');
-var redis = require('redis');
+const config = require('../config/config');
+const request = require('request');
+const cheerio = require('cheerio');
+const S = require('string');
+const redis = require('redis');
 
-var getLinks = function() {
-    url = config.links.url + config.links.total_products;
+const getLinks = () => {
+    const url = config.links.url + config.links.total_products;
 
     // The structure of our request call
     // The first parameter is our URL
     // The callback function takes 3 parameters, an error, response status code and the html
-    request(url, function(error, response, html) {
-
-        // First we'll check to make sure no errors occurred when making the request
-
+    request(url, (error, response, html) => {
         if (!error) {
-            // Next, we'll utilize the cheerio library on the returned html which will essentially give us jQuery functionality
-
-            var $ = cheerio.load(html);
-
-            // These functions will traverse the listing page in order to retrieve the URL and the product name
+            const $ = cheerio.load(html);
+            // Next, we'll utilize the cheerio library on the returned html
+            // which will essentially give us jQuery functionality
+            // These functions will traverse the listing page in order to retrieve the URL & product name
 
             $('div.product-list').each(function(i, element) {
                 $(this).children().each(function(i, element) {
@@ -32,23 +28,23 @@ var getLinks = function() {
                             $(this).children().each(function(i, element) {
 
                                 // Retrieve URL & product name
-                                var url = $(this).attr('href');
-                                var product_name = $(this).text();
+                                const url = $(this).attr('href');
+                                const product_name = $(this).text();
 
                                 // Remove filter from URL
                                 url = S(url).chompRight('?limit=' + config.links.total_products).s;
 
                                 // Obtain UID for Product Name
-                                var id = S(url).chompLeft('https://phdminerals.com/Minerals/').s;
+                                const id = S(url).chompLeft('https://phdminerals.com/Minerals/').s;
 
                                 // We will store These results in Redis in order to use that information in order script
-                                var client = redis.createClient();
+                                const client = redis.createClient();
 
                                 // Connect to Redis Server
                                 client.on('connect', function() {
 
                                     // This is the hash that will be stored in Redis
-                                    var hash = 'products:' + id;
+                                    const hash = 'products:' + id;
 
                                     // We check if the key is already present in redis if the product is there already we skip it
                                     // Otherwise we store it in Redis
