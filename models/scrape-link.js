@@ -15,57 +15,50 @@ const getLinks = () => {
             const $ = cheerio.load(html);
             // Next, we'll utilize the cheerio library on the returned html
             // which will essentially give us jQuery functionality
-            // These functions will traverse the listing page in order to retrieve the URL & product name
-
-            $('div.product-list').each(function(i, element) {
-                $(this).children().each(function(i, element) {
-                    $(this).children().each(function(i, element) {
-
-                        // Once we have reached the proper section, we will store the name and URL
-
+            // Functions will traverse the listing page in order to retrieve the URL & product name
+            $('div.product-list').each(function traverseDiv1() {
+                $(this).children().each(function traverseDiv2() {
+                    $(this).children().each(function traverseDiv3() {
                         if ($(this).hasClass('name')) {
-
-                            $(this).children().each(function(i, element) {
-
+                            // Once we have reached the proper section, store the name and URL
+                            $(this).children().each(function traverseDiv4() {
                                 // Retrieve URL & product name
-                                const url = $(this).attr('href');
-                                const product_name = $(this).text();
+                                const ProductUrlLink = $(this).attr('href');
+                                const productName = $(this).text();
 
                                 // Remove filter from URL
-                                url = S(url).chompRight('?limit=' + config.links.total_products).s;
+                                const ProductUrl = S(ProductUrlLink).chompRight(`?limit=${config.links.total_products}`).s;
 
                                 // Obtain UID for Product Name
-                                const id = S(url).chompLeft('https://phdminerals.com/Minerals/').s;
+                                const id = S(ProductUrl).chompLeft('https://phdminerals.com/Minerals/').s;
 
-                                // We will store These results in Redis in order to use that information in order script
+                                // Store results in Redis in order to use that information
                                 const client = redis.createClient();
 
                                 // Connect to Redis Server
-                                client.on('connect', function() {
-
+                                client.on('connect', () => {
                                     // This is the hash that will be stored in Redis
-                                    const hash = 'products:' + id;
+                                    const hash = `products:${id}`;
 
-                                    // We check if the key is already present in redis if the product is there already we skip it
+                                    // Check if the key is already present in redis
+                                    // if the product is there already we skip it
                                     // Otherwise we store it in Redis
-                                    client.exists(hash, function(err, reply) {
+                                    client.exists(hash, (err, reply) => {
                                         if (reply === 1) {
-                                            console.log('Key ' + hash + ' is already in Redis, skip ...');
+                                            console.log(`Key ${hash} is already in Redis, skip`);
                                         } else {
-                                            client.hmset(hash, 'uid', id, 'name', product_name, 'link', url);
-                                            console.log('Added key ' + hash + ' to Redis.');
+                                            client.hmset(hash, 'uid', id, 'name', productName, 'link', url);
+                                            console.log(`Added key ${hash} to Redis.`);
                                         }
                                     });
-
                                 });
-
                             });
                         }
                     });
                 });
             });
         }
-    })
+    });
 };
 
 module.exports.getLinks = getLinks;

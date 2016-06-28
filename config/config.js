@@ -24,6 +24,6 @@ module.exports = {
      */
     links: {
         url: 'https://phdminerals.com/Minerals?limit=',
-        total_products: 817,
+        total_products: 823,
     },
 };
