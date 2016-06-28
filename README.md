@@ -8,9 +8,7 @@ The project will consist of 2 main features :
 1. Create scrapers that will retrieve relevant data from website and store them in Redis and Mongo DB.
 2. Create a RESTful API that will allow to GET, POST, PUT & DELETE products and users using hapi JS Framework
 
-You can read more details in Wiki : [https://bitbucket.org/limrol/rock-api/wiki/Home](Link URL)
-
-* Version 0.0.1
+* Version 0.1.0
 
 ### How do I get set up? ###
 
