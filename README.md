@@ -9,6 +9,8 @@ The project will consist of 2 main features :
 - Create scrapers that will retrieve relevant data from website and store them in Redis and Mongo DB.
 - Create a RESTful API that will allow to GET, POST, PUT & DELETE products and users using hapi JS Framework
 
+You can read more details in Wiki : [https://github.com/alormil/phd-minerals-api/wiki](Link URL)
+
 * Version 0.1.0
 
 ### How do I get set up? ###
