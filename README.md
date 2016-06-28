@@ -27,11 +27,12 @@ redis-cli < scripts/typess_redis_import_script
 ```
 4. You can now scrape the website by calling the following URLS :
 
+```
 localhost:8080/scrape-link
 localhost:8080/scrape-region
 localhost:8080/scrape-type 
 localhost:8080/scrape-products
-etc .. 
+``` 
 
 * Configuration
 
